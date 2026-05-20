@@ -1,0 +1,51 @@
+---
+import { urlFor } from '../lib/sanity';
+import { pickLocale, getLocaleFromUrl, localePath } from '../i18n/utils';
+import type { Artwork } from '../lib/types';
+
+interface Props {
+  artwork: Artwork;
+}
+
+const { artwork } = Astro.props;
+const locale = getLocaleFromUrl(Astro.url);
+
+const title = pickLocale(artwork.title, locale) ?? '';
+const primary = artwork.images?.find((i) => i.isPrimary) ?? artwork.images?.[0];
+const alt = pickLocale(primary?.alt, locale) ?? title;
+const slug = pickLocale(artwork.slug, locale);
+const basePath = artwork.type === 'painting' ? '/paintings' : '/sculptures';
+const href = slug ? localePath(locale, `${basePath}/${slug}`) : '#';
+
+const imageUrl = primary
+  ? urlFor(primary).width(800).height(800).fit('max').auto('format').url()
+  : undefined;
+const imageSrcset = primary
+  ? [400, 600, 800, 1200, 1600]
+      .map((w) => `${urlFor(primary).width(w).fit('max').auto('format').url()} ${w}w`)
+      .join(', ')
+  : undefined;
+---
+<a href={href} class="group block">
+  <div class="aspect-square bg-black/5 overflow-hidden">
+    {imageUrl && (
+      <img
+        src={imageUrl}
+        srcset={imageSrcset}
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+      />
+    )}
+  </div>
+  <div class="pt-3">
+    <h3 class="text-base font-medium">{title}</h3>
+    {artwork.dateCreated && (
+      <p class="text-sm text-[color:var(--color-muted)]">
+        {new Date(artwork.dateCreated).getFullYear()}
+      </p>
+    )}
+  </div>
+</a>

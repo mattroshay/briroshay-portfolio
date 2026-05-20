@@ -1,0 +1,25 @@
+---
+import { getLocaleFromUrl, locales, localePath } from '../i18n/utils';
+
+const current = getLocaleFromUrl(Astro.url);
+
+// Strip the current locale prefix from the URL so we can rebuild it.
+let pathWithoutLocale = Astro.url.pathname;
+if (current !== 'en') {
+  pathWithoutLocale = pathWithoutLocale.replace(new RegExp(`^/${current}`), '') || '/';
+}
+---
+<div class="flex gap-2 text-sm">
+  {locales.map((locale) => (
+    <a
+      href={localePath(locale, pathWithoutLocale)}
+      class:list={[
+        'uppercase tracking-wide',
+        locale === current ? 'font-semibold' : 'opacity-60 hover:opacity-100',
+      ]}
+      aria-current={locale === current ? 'page' : undefined}
+    >
+      {locale}
+    </a>
+  ))}
+</div>

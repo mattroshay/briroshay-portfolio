@@ -1,0 +1,63 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getLocaleFromUrl, useTranslations, locales, localePath } from '../i18n/utils';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Canonical path WITHOUT locale prefix, e.g. "/paintings". Used to generate hreflang. */
+  canonicalPath?: string;
+  /** Open Graph image URL (absolute). */
+  ogImage?: string;
+}
+
+const { title, description, canonicalPath = '/', ogImage } = Astro.props;
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+const pageTitle = title ? `${title} — ${t.site.title}` : t.site.title;
+const pageDescription = description ?? t.site.description;
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const canonicalUrl = `${siteUrl}${localePath(locale, canonicalPath)}`;
+---
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    {locales.map((altLocale) => (
+      <link
+        rel="alternate"
+        hreflang={altLocale}
+        href={`${siteUrl}${localePath(altLocale, canonicalPath)}`}
+      />
+    ))}
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={`${siteUrl}${localePath('en', canonicalPath)}`}
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArtworkCard from '../components/ArtworkCard.astro';
+import { getFeaturedArtworks } from '../lib/queries';
+import { getLocaleFromUrl, useTranslations, localePath } from '../i18n/utils';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+let featured: Awaited<ReturnType<typeof getFeaturedArtworks>> = [];
+try {
+  featured = await getFeaturedArtworks(6);
+} catch {
+  // Sanity not configured yet (no project ID) — render empty state gracefully
+  featured = [];
+}
+---
+<BaseLayout canonicalPath="/" description={t.site.description}>
+  <section class="max-w-6xl mx-auto px-6 py-20">
+    <h1 class="text-5xl md:text-7xl mb-6">{t.site.title}</h1>
+    <p class="text-xl text-[color:var(--color-muted)] max-w-2xl">{t.home.intro}</p>
+    <div class="mt-10 flex gap-4">
+      <a
+        href={localePath(locale, '/paintings')}
+        class="px-6 py-3 bg-[color:var(--color-ink)] text-[color:var(--color-canvas)] text-sm uppercase tracking-wide"
+      >
+        {t.home.viewPaintings}
+      </a>
+      <a
+        href={localePath(locale, '/sculptures')}
+        class="px-6 py-3 border border-[color:var(--color-ink)] text-sm uppercase tracking-wide"
+      >
+        {t.home.viewSculptures}
+      </a>
+    </div>
+  </section>
+
+  {featured.length > 0 && (
+    <section class="max-w-6xl mx-auto px-6 pb-20">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {featured.map((artwork) => <ArtworkCard artwork={artwork} />)}
+      </div>
+    </section>
+  )}
+</BaseLayout>

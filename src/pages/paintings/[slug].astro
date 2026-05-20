@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getArtworksByType, getArtworkBySlug } from '../../lib/queries';
+import { urlFor } from '../../lib/sanity';
+import { pickLocale, getLocaleFromUrl, useTranslations } from '../../i18n/utils';
+import type { Locale } from '../../i18n/utils';
+
+export async function getStaticPaths() {
+  // Generate a path per painting using the English slug for the default-locale route.
+  let paintings: Awaited<ReturnType<typeof getArtworksByType>> = [];
+  try {
+    paintings = await getArtworksByType('painting');
+  } catch {
+    return [];
+  }
+  return paintings
+    .map((artwork) => {
+      const slug = artwork.slug?.en;
+      if (!slug) return null;
+      return { params: { slug }, props: { artworkId: artwork._id } };
+    })
+    .filter(Boolean);
+}
+
+const { slug } = Astro.params;
+const locale: Locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+if (!slug) return Astro.redirect('/paintings');
+const artwork = await getArtworkBySlug(slug, 'en');
+if (!artwork) return Astro.redirect('/paintings');
+
+const title = pickLocale(artwork.title, locale) ?? '';
+const description = pickLocale(artwork.description, locale);
+const seoDescription = pickLocale(artwork.seoDescription, locale) ?? description;
+const mediumDetails = pickLocale(artwork.mediumDetails, locale);
+const primary = artwork.images?.find((i) => i.isPrimary) ?? artwork.images?.[0];
+const alt = pickLocale(primary?.alt, locale) ?? title;
+
+const dimensionsText = artwork.dimensions
+  ? `${artwork.dimensions.width} × ${artwork.dimensions.height}${
+      artwork.dimensions.depth ? ` × ${artwork.dimensions.depth}` : ''
+    } ${artwork.dimensions.unit}`
+  : null;
+
+const statusLabel = {
+  available: t.artwork.available,
+  sold: t.artwork.sold,
+  reserved: t.artwork.reserved,
+  not_for_sale: t.artwork.notForSale,
+}[artwork.status];
+
+const ogImage = primary
+  ? urlFor(primary).width(1200).height(630).fit('crop').auto('format').url()
+  : undefined;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'VisualArtwork',
+  name: title,
+  description: seoDescription,
+  artMedium: mediumDetails,
+  artform: 'Painting',
+  artworkSurface: mediumDetails,
+  dateCreated: artwork.dateCreated,
+  width: artwork.dimensions ? `${artwork.dimensions.width} ${artwork.dimensions.unit}` : undefined,
+  height: artwork.dimensions ? `${artwork.dimensions.height} ${artwork.dimensions.unit}` : undefined,
+  creator: { '@type': 'Person', name: 'Bri Roshay' },
+  image: primary ? urlFor(primary).width(1600).auto('format').url() : undefined,
+};
+---
+<BaseLayout
+  title={title}
+  description={seoDescription}
+  canonicalPath={`/paintings/${slug}`}
+  ogImage={ogImage}
+>
+  <article class="max-w-6xl mx-auto px-6 py-12">
+    <div class="grid lg:grid-cols-2 gap-12">
+      <div>
+        {primary && (
+          <img
+            src={urlFor(primary).width(1200).auto('format').url()}
+            srcset={[600, 1200, 1600, 2400]
+              .map((w) => `${urlFor(primary).width(w).auto('format').url()} ${w}w`)
+              .join(', ')}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            alt={alt}
+            class="w-full"
+          />
+        )}
+      </div>
+      <div>
+        <h1 class="text-4xl mb-4">{title}</h1>
+        {description && (
+          <p class="text-lg text-[color:var(--color-muted)] mb-6">{description}</p>
+        )}
+        <dl class="text-sm space-y-2">
+          {artwork.dateCreated && (
+            <div class="flex gap-4">
+              <dt class="w-32 text-[color:var(--color-muted)]">{t.artwork.dateCreated}</dt>
+              <dd>{new Date(artwork.dateCreated).getFullYear()}</dd>
+            </div>
+          )}
+          {mediumDetails && (
+            <div class="flex gap-4">
+              <dt class="w-32 text-[color:var(--color-muted)]">{t.artwork.medium}</dt>
+              <dd>{mediumDetails}</dd>
+            </div>
+          )}
+          {dimensionsText && (
+            <div class="flex gap-4">
+              <dt class="w-32 text-[color:var(--color-muted)]">{t.artwork.dimensions}</dt>
+              <dd>{dimensionsText}</dd>
+            </div>
+          )}
+          <div class="flex gap-4">
+            <dt class="w-32 text-[color:var(--color-muted)]">{t.artwork.status}</dt>
+            <dd>{statusLabel}</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </article>
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>

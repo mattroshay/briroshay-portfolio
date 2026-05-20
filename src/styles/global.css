@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+/* Design tokens — Claude Design's mockups will land here.
+   Treat these as placeholders, easy to override later. */
+@theme {
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --color-canvas: #faf7f2;
+  --color-ink: #1c1c1c;
+  --color-muted: #6b6b6b;
+  --color-accent: #8b6f47;
+}
+
+html {
+  font-family: var(--font-body);
+  background: var(--color-canvas);
+  color: var(--color-ink);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}

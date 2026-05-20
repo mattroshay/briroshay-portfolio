@@ -1,0 +1,53 @@
+{
+  "site": {
+    "title": "Bri Roshay",
+    "tagline": "Paintings and sculptures",
+    "description": "Original paintings and sculptures by Bri Roshay."
+  },
+  "nav": {
+    "home": "Home",
+    "paintings": "Paintings",
+    "sculptures": "Sculptures",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "home": {
+    "intro": "Original paintings and sculptures from the studio of Bri Roshay.",
+    "viewPaintings": "View paintings",
+    "viewSculptures": "View sculptures"
+  },
+  "paintings": {
+    "title": "Paintings",
+    "filterAll": "All",
+    "filterOil": "Oil",
+    "filterAcrylic": "Acrylic",
+    "filterWatercolour": "Watercolour",
+    "filterMixedMedia": "Mixed media",
+    "filterOther": "Other",
+    "empty": "No paintings yet."
+  },
+  "sculptures": {
+    "title": "Sculptures",
+    "empty": "No sculptures yet."
+  },
+  "artwork": {
+    "dimensions": "Dimensions",
+    "medium": "Medium",
+    "dateCreated": "Year",
+    "status": "Status",
+    "available": "Available",
+    "sold": "Sold",
+    "reserved": "Reserved",
+    "notForSale": "Not for sale",
+    "enquire": "Enquire about this piece"
+  },
+  "about": {
+    "title": "About"
+  },
+  "contact": {
+    "title": "Contact"
+  },
+  "footer": {
+    "copyright": "© Bri Roshay"
+  }
+}
