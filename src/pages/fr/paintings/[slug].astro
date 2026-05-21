@@ -1,9 +1,9 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getArtworksByType, getArtworkBySlug } from '../../lib/queries';
-import { urlFor } from '../../lib/sanity';
-import { pickLocale, getLocaleFromUrl, useTranslations } from '../../i18n/utils';
-import type { Locale } from '../../i18n/utils';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getArtworksByType, getArtworkBySlug } from '../../../lib/queries';
+import { urlFor } from '../../../lib/sanity';
+import { pickLocale, getLocaleFromUrl, useTranslations } from '../../../i18n/utils';
+import type { Locale } from '../../../i18n/utils';
 
 export async function getStaticPaths() {
   // Generate a path per painting using the English slug for the default-locale route.
