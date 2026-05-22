@@ -1,15 +1,81 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
+import { getLocaleFromUrl, useTranslations, localePath } from '../../i18n/utils';
 
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
+
+// Split the side-panel heading on \n so we can render line breaks.
+const sideTitleLines = t.contact.side.title.split('\n');
 ---
-<BaseLayout title={t.contact.title} canonicalPath="/contact">
-  <section class="max-w-3xl mx-auto px-6 py-16">
-    <h1 class="text-4xl md:text-5xl mb-8">{t.contact.title}</h1>
-    <p class="text-lg text-[color:var(--color-muted)]">
-      {/* TODO: mom's email / form goes here. */}
-    </p>
+<BaseLayout title={t.contact.title} canonicalPath="/contact" navKey="contact">
+  <header class="page-head wrap">
+    <div class="page-head-bar">
+      <a href={localePath(locale, '/')} class="page-back">
+        <span aria-hidden="true">←</span>
+        <span>{t.nav.backToStudio}</span>
+      </a>
+      <div class="mono-sm">/06 — {t.contact.label}</div>
+    </div>
+    <h1 class="page-title fade-up">
+      {t.contact.titleA}<span class="accent">{t.contact.titleAccent}</span>{t.contact.titleB}
+    </h1>
+    {t.contact.blurb && (
+      <p class="page-blurb fade-up" style="transition-delay: 120ms;">{t.contact.blurb}</p>
+    )}
+  </header>
+
+  <section class="section wrap">
+    <div class="contact-grid">
+      {/* Form is intentionally unwired — a real submit handler lands in a later PR. */}
+      <form action="#" method="post" class="fade-up">
+        <div class="field">
+          <label for="contact-name">{t.contact.form.name}</label>
+          <input id="contact-name" name="name" type="text" placeholder={t.contact.form.namePlaceholder} />
+        </div>
+        <div class="field">
+          <label for="contact-email">{t.contact.form.email}</label>
+          <input id="contact-email" name="email" type="email" placeholder={t.contact.form.emailPlaceholder} />
+        </div>
+        <div class="field">
+          <label for="contact-subject">{t.contact.form.subject}</label>
+          <input id="contact-subject" name="subject" type="text" placeholder={t.contact.form.subjectPlaceholder} />
+        </div>
+        <div class="field">
+          <label for="contact-message">{t.contact.form.message}</label>
+          <textarea id="contact-message" name="message" placeholder={t.contact.form.messagePlaceholder}></textarea>
+        </div>
+        <button type="submit" class="btn-filled">{t.contact.form.send} →</button>
+      </form>
+
+      <div class="contact-side fade-up" style="transition-delay: 120ms;">
+        <h4>
+          {sideTitleLines.map((line, i) => (
+            <>
+              {i > 0 && <br />}
+              {line}
+            </>
+          ))}
+        </h4>
+        <div class="links">
+          <a href={t.contact.side.emailHref}>
+            <span>✉ {t.contact.side.email}</span>
+            <span>{t.contact.side.emailValue} →</span>
+          </a>
+          <a href={t.contact.side.facebookHref} target="_blank" rel="noreferrer">
+            <span>◑ {t.contact.side.facebook}</span>
+            <span>{t.contact.side.facebookValue} →</span>
+          </a>
+          <a href={t.contact.side.instagramHref}>
+            <span>◉ {t.contact.side.instagram}</span>
+            <span>{t.contact.side.instagramValue} →</span>
+          </a>
+          <a href={t.contact.side.studioVisitHref}>
+            <span>◐ {t.contact.side.studioVisit}</span>
+            <span>{t.contact.side.byAppointment} →</span>
+          </a>
+        </div>
+      </div>
+    </div>
   </section>
 </BaseLayout>

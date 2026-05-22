@@ -1,45 +1,173 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ArtworkCard from '../../components/ArtworkCard.astro';
-import { getFeaturedArtworks } from '../../lib/queries';
 import { getLocaleFromUrl, useTranslations, localePath } from '../../i18n/utils';
 
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
-let featured: Awaited<ReturnType<typeof getFeaturedArtworks>> = [];
-try {
-  featured = await getFeaturedArtworks(6);
-} catch {
-  // Sanity not configured yet (no project ID) — render empty state gracefully
-  featured = [];
-}
+// Placeholder featured pieces — Sanity wiring lands in a later PR.
+// Tones cycle through warm/cool/dark; the first card is `span-tall` so the
+// gallery grid has a focal point.
+const featured = [
+  { kind: 'painting',  tone: 'warm', span: 'tall'   },
+  { kind: 'painting',  tone: 'cool', span: 'square' },
+  { kind: 'painting',  tone: 'dark', span: 'square' },
+  { kind: 'sculpture', tone: 'warm', span: 'square' },
+  { kind: 'sculpture', tone: 'cool', span: 'square' },
+] as const;
 ---
 <BaseLayout canonicalPath="/" description={t.site.description}>
-  <section class="max-w-6xl mx-auto px-6 py-20">
-    <h1 class="text-5xl md:text-7xl mb-6">{t.site.title}</h1>
-    <p class="text-xl text-[color:var(--color-muted)] max-w-2xl">{t.home.intro}</p>
-    <div class="mt-10 flex gap-4">
-      <a
-        href={localePath(locale, '/paintings')}
-        class="px-6 py-3 bg-[color:var(--color-ink)] text-[color:var(--color-canvas)] text-sm uppercase tracking-wide"
-      >
-        {t.home.viewPaintings}
+  {/* ── HERO ── */}
+  <section class="hero wrap" id="top">
+    <div class="hero-bar">
+      <span>◐ {t.home.hero.studio}</span>
+      <span class="status-pill">
+        <span class="dot"></span>
+        {t.home.hero.available}
+      </span>
+    </div>
+
+    <div class="hero-grid">
+      <div>
+        <h1 class="hero-name fade-up">
+          <span class="l1">{t.home.hero.line1}</span>
+          <span class="l2">
+            <span class="outline">{t.home.hero.line2}</span><span class="ampersand"> ✦</span>
+          </span>
+        </h1>
+        <p class="hero-kicker fade-up" style="transition-delay: 120ms;">{t.home.hero.kicker}</p>
+        <div class="hero-meta fade-up" style="transition-delay: 200ms;">
+          <span><b>30+</b> {t.home.hero.metaYears}</span>
+          <span><b>120+</b> {t.home.hero.metaWorks}</span>
+          <span><b>14</b> {t.home.hero.metaShows}</span>
+        </div>
+      </div>
+
+      <div class="hero-art fade-up" style="transition-delay: 240ms;">
+        <div class="art-ph warm">{'◆ HERO\nARTWORK'}</div>
+      </div>
+    </div>
+
+    <div class="hero-credits fade-up" style="transition-delay: 300ms;">
+      <span>{t.home.hero.creditPainter}</span>
+      <span class="sep">✦</span>
+      <span>{t.home.hero.creditSculptor}</span>
+      <span class="sep">✦</span>
+      <span>{t.home.hero.creditCountry}</span>
+      <span class="sep">✦</span>
+      <span>{t.home.hero.creditYear}</span>
+    </div>
+  </section>
+
+  {/* ── FEATURED ── */}
+  <section class="section wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-num">{t.home.featured.label}</div>
+        <h2 class="section-title fade-up">
+          {t.home.featured.title}<span class="accent">{t.home.featured.titleAccent}</span>
+        </h2>
+      </div>
+      <p class="section-blurb fade-up" style="transition-delay: 120ms;">
+        {t.home.featured.blurb}
+      </p>
+    </div>
+
+    <div class="gallery">
+      {featured.map((piece) => (
+        <a href="#" class={`art-card span-${piece.span}`} aria-label={piece.kind === 'sculpture' ? t.home.featured.sculpturePh : t.home.featured.paintingPh}>
+          <div class={`art-ph ${piece.tone}`}>
+            {piece.kind === 'sculpture' ? t.home.featured.sculpturePh : t.home.featured.paintingPh}
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <div class="section-action">
+      <a href={localePath(locale, '/paintings')} class="btn-line">
+        {t.home.featured.allPaintings} →
       </a>
-      <a
-        href={localePath(locale, '/sculptures')}
-        class="px-6 py-3 border border-[color:var(--color-ink)] text-sm uppercase tracking-wide"
-      >
-        {t.home.viewSculptures}
+      <a href={localePath(locale, '/sculptures')} class="btn-line">
+        {t.home.featured.allSculptures} →
       </a>
     </div>
   </section>
 
-  {featured.length > 0 && (
-    <section class="max-w-6xl mx-auto px-6 pb-20">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {featured.map((artwork) => <ArtworkCard artwork={artwork} />)}
+  {/* ── ABOUT TEASER ── */}
+  <section class="section wrap">
+    <div class="home-about">
+      <div class="portrait fade-up">
+        <div class="portrait-tape"></div>
+        <div class="art-ph warm">{t.home.about.portraitPh}</div>
       </div>
-    </section>
-  )}
+      <div class="fade-up" style="transition-delay: 120ms;">
+        <div class="section-num">{t.home.about.label}</div>
+        <h2 class="section-title" style="font-size: clamp(40px, 8vw, 96px);">
+          {t.home.about.titleA}<span class="accent">{t.home.about.titleAccent}</span><br />{t.home.about.titleB}
+        </h2>
+        <p style="margin-top: var(--gap-md); color: var(--color-fg-soft); font-size: 15px; max-width: 52ch; line-height: 1.6;">
+          {t.home.about.blurb}
+        </p>
+        <div style="margin-top: var(--gap-md);">
+          <a href={localePath(locale, '/about')} class="btn-line">
+            {t.home.about.readMore} →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ── UPCOMING SHOW ── */}
+  <section class="section wrap">
+    <a href={localePath(locale, '/exhibitions')} class="show-card fade-up">
+      <div class="show-card-l">
+        <div class="mono-sm" style="color: var(--accent-1);">◐ {t.home.upcoming.label}</div>
+        <div class="show-card-yr">{t.home.upcoming.year}</div>
+        <div class="mono-sm">{t.home.upcoming.month}</div>
+      </div>
+      <div class="show-card-r">
+        <h3 class="show-card-title">{t.home.upcoming.title}</h3>
+        <div class="show-card-meta">{t.home.upcoming.venue}</div>
+        <div class="show-card-arrow">→</div>
+      </div>
+    </a>
+  </section>
+
+  {/* ── SHOP TEASER ── */}
+  <section class="section wrap">
+    <div class="shop">
+      <div class="shop-grid">
+        <div>
+          <h3 class="fade-up">
+            {t.shop.headingA}<br /><span class="accent2">{t.shop.headingAccent}</span> ✦
+          </h3>
+          <p class="shop-blurb">{t.shop.blurb}</p>
+          <div class="shop-list">
+            <div class="row">
+              <span>{t.shop.rows.originalsLabel}</span>
+              <span class="px">{t.shop.rows.originalsPrice}</span>
+            </div>
+            <div class="row">
+              <span>{t.shop.rows.sculpturesLabel}</span>
+              <span class="px">{t.shop.rows.sculpturesPrice}</span>
+            </div>
+            <div class="row">
+              <span>{t.shop.rows.printsLabel}</span>
+              <span class="px">{t.shop.rows.printsPrice}</span>
+            </div>
+            <div class="row">
+              <span>{t.shop.rows.commissionsLabel}</span>
+              <span class="px">{t.shop.rows.commissionsPrice}</span>
+            </div>
+          </div>
+        </div>
+        <div class="shop-actions">
+          <a href={localePath(locale, '/contact')} class="btn-filled">
+            {t.shop.inquireNow} →
+          </a>
+          <span class="mono-sm" style="align-self: center;">{t.shop.comingSoon}</span>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>

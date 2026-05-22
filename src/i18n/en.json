@@ -20,7 +20,47 @@
   "home": {
     "intro": "Original paintings and sculptures from the studio of Bri Roshay.",
     "viewPaintings": "View paintings",
-    "viewSculptures": "View sculptures"
+    "viewSculptures": "View sculptures",
+    "hero": {
+      "studio": "Studio · France",
+      "available": "Available for commission",
+      "line1": "BRI",
+      "line2": "ROSHAY",
+      "kicker": "Painter and sculptor working from a studio in France — landscapes, interiors, and quiet figures, in oil, clay, and bronze.",
+      "metaYears": "years practice",
+      "metaWorks": "works",
+      "metaShows": "shows",
+      "creditPainter": "Painter",
+      "creditSculptor": "Sculptor",
+      "creditCountry": "France",
+      "creditYear": "2026"
+    },
+    "featured": {
+      "label": "Featured",
+      "title": "From the ",
+      "titleAccent": "studio",
+      "blurb": "A small selection of recent paintings and sculptures. Explore the full collection.",
+      "paintingPh": "◆ PAINTING\nPHOTO",
+      "sculpturePh": "◆ SCULPTURE\nPHOTO",
+      "allPaintings": "All paintings",
+      "allSculptures": "All sculptures"
+    },
+    "about": {
+      "label": "About",
+      "titleA": "Thirty ",
+      "titleAccent": "years",
+      "titleB": "in paint & clay",
+      "blurb": "Brigitte has painted and sculpted for over thirty years — landscapes from memory, interiors from her windows, figures from the long walks along the lake. Each piece is hand-finished in her studio in France.",
+      "readMore": "Read more",
+      "portraitPh": "◆ ARTIST\nPORTRAIT"
+    },
+    "upcoming": {
+      "label": "Upcoming",
+      "year": "2026",
+      "month": "TBD",
+      "title": "Next exhibition — to be announced",
+      "venue": "Studio Roshay · France"
+    }
   },
   "paintings": {
     "title": "Paintings",
@@ -48,10 +88,62 @@
     "enquire": "Enquire about this piece"
   },
   "about": {
-    "title": "About"
+    "title": "About",
+    "label": "About",
+    "titleA": "The ",
+    "titleAccent": "studio",
+    "titleB": "",
+    "blurb": "A short portrait of Brigitte — her practice, her studio, and the signatures she has worked under.",
+    "bio": "Brigitte Roshay has painted and sculpted for more than thirty years. Trained in classical drawing and self-taught in clay, she works out of a small studio in France — between long walks along the lake and quiet mornings at the window. Her landscapes and interiors are painted from memory; her figures, in terracotta and bronze, are pulled from the same patient attention.",
+    "quote": "“Art is perception — born where imagination meets the soul.”",
+    "signatures": {
+      "one": "Brigitte",
+      "two": "BriBri",
+      "three": "briroshay"
+    },
+    "stats": {
+      "yearsN": "30+",
+      "yearsL": "Years",
+      "originalsN": "120",
+      "originalsL": "Originals",
+      "exhibitionsN": "14",
+      "exhibitionsL": "Exhibitions"
+    },
+    "portraitPh": "◆ ARTIST\nPORTRAIT"
   },
   "contact": {
-    "title": "Contact"
+    "title": "Contact",
+    "label": "Contact",
+    "titleA": "Say ",
+    "titleAccent": "hello",
+    "titleB": "",
+    "blurb": "For visits, purchases, commissions, or just to share a thought — Brigitte reads every message.",
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "hello@example.com",
+      "subject": "Subject",
+      "subjectPlaceholder": "Visit · Purchase · Commission · …",
+      "message": "Message",
+      "messagePlaceholder": "Tell Brigitte what you have in mind…",
+      "send": "Send message"
+    },
+    "side": {
+      "title": "Or reach\nout directly",
+      "email": "Email",
+      "emailValue": "hello@brigitteroshay.art",
+      "emailHref": "mailto:hello@brigitteroshay.art",
+      "facebook": "Facebook",
+      "facebookValue": "/briroshay",
+      "facebookHref": "https://www.facebook.com/briroshay",
+      "instagram": "Instagram",
+      "instagramValue": "@briroshay.art",
+      "instagramHref": "#",
+      "studioVisit": "Studio visit",
+      "byAppointment": "by appointment",
+      "studioVisitHref": "#"
+    }
   },
   "exhibitions": {
     "title": "Exhibitions",
@@ -61,7 +153,20 @@
   "shop": {
     "title": "Shop",
     "comingSoon": "Full shop · coming soon",
-    "inquireNow": "Inquire now"
+    "inquireNow": "Inquire now",
+    "headingA": "Take a piece ",
+    "headingAccent": "home",
+    "blurb": "A small boutique is opening soon. Until then, all originals and limited prints are available by inquiry — Brigitte responds personally.",
+    "rows": {
+      "originalsLabel": "Original oil paintings",
+      "originalsPrice": "on inquiry",
+      "sculpturesLabel": "Sculptures, unique pieces",
+      "sculpturesPrice": "on inquiry",
+      "printsLabel": "Signed giclée prints (ed. 25)",
+      "printsPrice": "€ 180 — 320",
+      "commissionsLabel": "Commissions",
+      "commissionsPrice": "from € 600"
+    }
   },
   "footer": {
     "copyright": "© Bri Roshay",
