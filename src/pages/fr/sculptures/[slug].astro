@@ -2,7 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getArtworksByType, getArtworkBySlug } from '../../../lib/queries';
 import { urlFor } from '../../../lib/sanity';
-import { pickLocale, getLocaleFromUrl, useTranslations } from '../../../i18n/utils';
+import { pickLocale, getLocaleFromUrl, useTranslations, localePath } from '../../../i18n/utils';
 import type { Locale } from '../../../i18n/utils';
 
 export async function getStaticPaths() {
@@ -25,9 +25,9 @@ const { slug } = Astro.params;
 const locale: Locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
-if (!slug) return Astro.redirect('/sculptures');
+if (!slug) return Astro.redirect(localePath(locale, '/sculptures'));
 const artwork = await getArtworkBySlug(slug, 'en');
-if (!artwork) return Astro.redirect('/sculptures');
+if (!artwork) return Astro.redirect(localePath(locale, '/sculptures'));
 
 const title = pickLocale(artwork.title, locale) ?? '';
 const description = pickLocale(artwork.description, locale);
@@ -73,54 +73,102 @@ const jsonLd = {
   description={seoDescription}
   canonicalPath={`/sculptures/${slug}`}
   ogImage={ogImage}
+  navKey="sculptures"
 >
-  <article class="max-w-6xl mx-auto px-6 py-12">
-    <div class="grid lg:grid-cols-2 gap-12">
-      <div>
-        {primary && (
-          <img
-            src={urlFor(primary).width(1200).auto('format').url()}
-            srcset={[600, 1200, 1600, 2400]
-              .map((w) => `${urlFor(primary).width(w).auto('format').url()} ${w}w`)
-              .join(', ')}
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            alt={alt}
-            class="w-full"
-          />
+  <header class="page-head wrap">
+    <div class="page-head-bar">
+      <a href={localePath(locale, '/sculptures')} class="page-back">
+        <span aria-hidden="true">←</span>
+        <span>{t.sculptures.backToSculptures}</span>
+      </a>
+      <div class="mono-sm">/02 — {t.sculptures.label}</div>
+    </div>
+    <h1 class="page-title fade-up" style="font-size: clamp(40px, 8vw, 96px);">
+      {title}
+    </h1>
+  </header>
+
+  <article class="section wrap">
+    <div class="about-grid">
+      <div class="fade-up">
+        {primary ? (
+          <div class="hero-art" style="aspect-ratio: auto;">
+            <img
+              src={urlFor(primary).width(1200).auto('format').url()}
+              srcset={[600, 1200, 1600, 2400]
+                .map((w) => `${urlFor(primary).width(w).auto('format').url()} ${w}w`)
+                .join(', ')}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              alt={alt}
+              style="position: static; width: 100%; height: auto;"
+            />
+          </div>
+        ) : (
+          <div class="portrait">
+            <div class="art-ph cool">{'◆ SCULPTURE\nPHOTO'}</div>
+          </div>
         )}
       </div>
-      <div>
-        <h1 class="text-4xl mb-4">{title}</h1>
-        {description && (
-          <p class="text-lg text-[color:var(--color-muted)] mb-6">{description}</p>
-        )}
-        <dl class="text-sm space-y-2">
+
+      <div class="about-body fade-up" style="transition-delay: 120ms;">
+        {description && <p>{description}</p>}
+
+        <dl class="artwork-meta">
           {artwork.dateCreated && (
-            <div class="flex gap-4">
-              <dt class="w-32 text-[color:var(--color-muted)]">{t.artwork.dateCreated}</dt>
+            <div class="row">
+              <dt class="mono-sm">{t.artwork.dateCreated}</dt>
               <dd>{new Date(artwork.dateCreated).getFullYear()}</dd>
             </div>
           )}
           {mediumDetails && (
-            <div class="flex gap-4">
-              <dt class="w-32 text-[color:var(--color-muted)]">{t.artwork.medium}</dt>
+            <div class="row">
+              <dt class="mono-sm">{t.artwork.medium}</dt>
               <dd>{mediumDetails}</dd>
             </div>
           )}
           {dimensionsText && (
-            <div class="flex gap-4">
-              <dt class="w-32 text-[color:var(--color-muted)]">{t.artwork.dimensions}</dt>
+            <div class="row">
+              <dt class="mono-sm">{t.artwork.dimensions}</dt>
               <dd>{dimensionsText}</dd>
             </div>
           )}
-          <div class="flex gap-4">
-            <dt class="w-32 text-[color:var(--color-muted)]">{t.artwork.status}</dt>
+          <div class="row">
+            <dt class="mono-sm">{t.artwork.status}</dt>
             <dd>{statusLabel}</dd>
           </div>
         </dl>
+
+        {artwork.status === 'available' && (
+          <div style="margin-top: var(--gap-md);">
+            <a href={localePath(locale, '/contact')} class="btn-filled">
+              {t.artwork.enquire} →
+            </a>
+          </div>
+        )}
       </div>
     </div>
   </article>
 
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </BaseLayout>
+
+<style>
+  .artwork-meta {
+    margin-top: var(--gap-md);
+    border-top: 1px solid var(--color-line-soft);
+  }
+  .artwork-meta .row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: var(--gap-md);
+    align-items: baseline;
+    padding: var(--gap-sm) 0;
+    border-bottom: 1px solid var(--color-line-soft);
+  }
+  .artwork-meta dt { color: var(--color-fg-mute); }
+  .artwork-meta dd {
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--color-fg);
+  }
+</style>

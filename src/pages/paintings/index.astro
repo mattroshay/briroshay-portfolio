@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ArtworkCard from '../../components/ArtworkCard.astro';
 import { getArtworksByType } from '../../lib/queries';
-import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
+import { urlFor } from '../../lib/sanity';
+import { pickLocale, getLocaleFromUrl, useTranslations, localePath } from '../../i18n/utils';
 
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
@@ -14,67 +14,157 @@ try {
   paintings = [];
 }
 
-const filters = [
-  { key: 'all', label: t.paintings.filterAll },
-  { key: 'oil', label: t.paintings.filterOil },
-  { key: 'acrylic', label: t.paintings.filterAcrylic },
+// The design's filter set is the small one: All / Oil / Acrylic / Watercolour.
+// `mediumCategory` in Sanity can also be `mixed_media` / `other`; those still
+// render under "All" but have no individual pill.
+const FILTERS = [
+  { key: 'all',        label: t.paintings.filterAll },
+  { key: 'oil',        label: t.paintings.filterOil },
+  { key: 'acrylic',    label: t.paintings.filterAcrylic },
   { key: 'watercolour', label: t.paintings.filterWatercolour },
-  { key: 'mixed_media', label: t.paintings.filterMixedMedia },
-  { key: 'other', label: t.paintings.filterOther },
 ] as const;
+
+const counts: Record<string, number> = {
+  all: paintings.length,
+  oil: paintings.filter((p) => p.mediumCategory === 'oil').length,
+  acrylic: paintings.filter((p) => p.mediumCategory === 'acrylic').length,
+  watercolour: paintings.filter((p) => p.mediumCategory === 'watercolour').length,
+};
+
+// Cycle placeholder tones so the empty-Sanity grid still has visual rhythm.
+const TONES = ['warm', 'cool', 'dark'] as const;
 ---
-<BaseLayout title={t.paintings.title} canonicalPath="/paintings">
-  <section class="max-w-6xl mx-auto px-6 py-12">
-    <h1 class="text-4xl md:text-5xl mb-8">{t.paintings.title}</h1>
-
-    <div class="flex flex-wrap gap-2 mb-8" role="tablist" aria-label="Medium filter">
-      {filters.map(({ key, label }) => (
-        <button
-          type="button"
-          data-filter={key}
-          class="filter-chip text-sm px-3 py-1 border border-black/15 rounded-full hover:bg-black/5 transition"
-          data-active={key === 'all'}
-        >
-          {label}
-        </button>
-      ))}
+<BaseLayout
+  title={t.paintings.title}
+  description={t.paintings.blurb}
+  canonicalPath="/paintings"
+  navKey="paintings"
+>
+  <header class="page-head wrap">
+    <div class="page-head-bar">
+      <a href={localePath(locale, '/')} class="page-back">
+        <span aria-hidden="true">←</span>
+        <span>{t.nav.backToStudio}</span>
+      </a>
+      <div class="mono-sm">/01 — {t.paintings.label}</div>
     </div>
+    <h1 class="page-title fade-up">
+      {t.paintings.titleA}<span class="accent">{t.paintings.titleAccent}</span>{t.paintings.titleB}
+    </h1>
+    <p class="page-blurb fade-up" style="transition-delay: 120ms;">{t.paintings.blurb}</p>
+  </header>
 
-    {paintings.length === 0 ? (
-      <p class="text-[color:var(--color-muted)]">{t.paintings.empty}</p>
-    ) : (
-      <div id="gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {paintings.map((artwork) => (
-          <div data-medium={artwork.mediumCategory ?? 'other'}>
-            <ArtworkCard artwork={artwork} />
-          </div>
+  <section class="section wrap" id="paintings">
+    <div class="filter-bar" role="tablist" aria-label={t.paintings.filterAria}>
+      <div class="filter-label mono-sm">{t.paintings.filterLabel}</div>
+      <div class="filter-pills">
+        {FILTERS.map(({ key, label }) => (
+          <button
+            type="button"
+            role="tab"
+            aria-selected={key === 'all'}
+            class={`filter-pill${key === 'all' ? ' active' : ''}`}
+            data-filter={key}
+          >
+            <span>{label}</span>
+            <span class="filter-pill-n">{counts[key]}</span>
+          </button>
         ))}
       </div>
-    )}
+    </div>
+
+    <div class="gallery" id="paintings-gallery">
+      {paintings.length === 0 ? (
+        <div class="filter-empty">
+          <div class="mono-sm">{t.paintings.empty}</div>
+        </div>
+      ) : (
+        paintings.map((artwork, i) => {
+          const slug = pickLocale(artwork.slug, locale) ?? artwork.slug?.en;
+          const title = pickLocale(artwork.title, locale) ?? '';
+          const primary = artwork.images?.find((img) => img.isPrimary) ?? artwork.images?.[0];
+          const altText = pickLocale(primary?.alt, locale) ?? title;
+          const year = artwork.dateCreated ? new Date(artwork.dateCreated).getFullYear() : '';
+          const medium = artwork.mediumCategory ?? 'other';
+          const tone = TONES[i % TONES.length];
+          const href = slug ? localePath(locale, `/paintings/${slug}`) : '#';
+          return (
+            <a
+              href={href}
+              class="art-card span-square"
+              data-medium={medium}
+              aria-label={title}
+            >
+              {primary ? (
+                <img
+                  src={urlFor(primary).width(800).auto('format').url()}
+                  srcset={[400, 800, 1200]
+                    .map((w) => `${urlFor(primary).width(w).auto('format').url()} ${w}w`)
+                    .join(', ')}
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  alt={altText}
+                  loading="lazy"
+                />
+              ) : (
+                <div class={`art-ph ${tone}`}>{'◆ PAINTING\nPHOTO'}</div>
+              )}
+              <div class="meta">
+                <span class="t">{title}</span>
+                {year && <span class="y">{year}</span>}
+              </div>
+            </a>
+          );
+        })
+      )}
+      <div class="filter-empty" id="filter-empty" hidden>
+        <div class="mono-sm">{t.paintings.filterEmpty}</div>
+      </div>
+    </div>
+
+    <div class="section-action">
+      <span class="mono-sm" id="paintings-count" data-total={paintings.length}>
+        {paintings.length.toString().padStart(2, '0')} {t.paintings.worksShown}
+      </span>
+      <a href="#" class="btn-line">{t.paintings.viewArchive} →</a>
+    </div>
   </section>
 </BaseLayout>
 
-<script>
-  // Lightweight client-side filter — no framework needed.
-  const chips = document.querySelectorAll<HTMLButtonElement>('.filter-chip');
-  const items = document.querySelectorAll<HTMLElement>('#gallery > [data-medium]');
+<script is:inline define:vars={{ worksShown: t.paintings.worksShown, ofWord: t.paintings.of }}>
+  // Client-side medium filter.
+  const pills = document.querySelectorAll('.filter-pill');
+  const cards = document.querySelectorAll('#paintings-gallery > .art-card');
+  const emptyState = document.getElementById('filter-empty');
+  const counter = document.getElementById('paintings-count');
+  const total = counter ? Number(counter.dataset.total ?? '0') : 0;
 
-  chips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      const filter = chip.dataset.filter ?? 'all';
-      chips.forEach((c) => (c.dataset.active = String(c.dataset.filter === filter)));
-      items.forEach((item) => {
-        const show = filter === 'all' || item.dataset.medium === filter;
-        item.style.display = show ? '' : 'none';
-      });
+  function applyFilter(filter) {
+    let shown = 0;
+    cards.forEach((card) => {
+      const medium = card.getAttribute('data-medium') ?? 'other';
+      const visible = filter === 'all' || medium === filter;
+      card.style.display = visible ? '' : 'none';
+      if (visible) shown += 1;
+    });
+
+    if (emptyState) emptyState.hidden = !(total > 0 && shown === 0);
+
+    if (counter) {
+      const padded = String(shown).padStart(2, '0');
+      const suffix = filter !== 'all' && shown !== total ? ` · ${ofWord}${total}` : '';
+      counter.textContent = `${padded} ${worksShown}${suffix}`;
+    }
+
+    pills.forEach((p) => {
+      const isActive = p.getAttribute('data-filter') === filter;
+      p.classList.toggle('active', isActive);
+      p.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+  }
+
+  pills.forEach((pill) => {
+    pill.addEventListener('click', () => {
+      applyFilter(pill.getAttribute('data-filter') ?? 'all');
     });
   });
 </script>
-
-<style>
-  .filter-chip[data-active="true"] {
-    background: var(--color-ink);
-    color: var(--color-canvas);
-    border-color: var(--color-ink);
-  }
-</style>
