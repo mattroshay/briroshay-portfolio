@@ -5,18 +5,18 @@ import { getLocaleFromUrl, useTranslations, localePath } from '../i18n/utils';
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
-// Placeholder featured pieces — Sanity wiring lands in a later PR.
-// Tones cycle through warm/cool/dark; the first card is `span-tall` so the
-// gallery grid has a focal point.
+// Featured pieces — local template images from public/art/.
+// Will be replaced by Sanity content once published; the first card is
+// `span-tall` so the gallery grid has a focal point.
 const featured = [
-  { kind: 'painting',  tone: 'warm', span: 'tall'   },
-  { kind: 'painting',  tone: 'cool', span: 'square' },
-  { kind: 'painting',  tone: 'dark', span: 'square' },
-  { kind: 'sculpture', tone: 'warm', span: 'square' },
-  { kind: 'sculpture', tone: 'cool', span: 'square' },
+  { kind: 'painting',  src: '/art/paintings/painting-01.jpg',   span: 'tall'   },
+  { kind: 'painting',  src: '/art/paintings/painting-02.jpg',   span: 'square' },
+  { kind: 'painting',  src: '/art/paintings/painting-03.jpg',   span: 'square' },
+  { kind: 'sculpture', src: '/art/sculptures/sculpture-01.jpg', span: 'square' },
+  { kind: 'sculpture', src: '/art/sculptures/sculpture-02.jpg', span: 'square' },
 ] as const;
 ---
-<BaseLayout canonicalPath="/" description={t.site.description}>
+<BaseLayout canonicalPath="/" description={t.site.description} navKey="home">
   {/* ── HERO ── */}
   <section class="hero wrap" id="top">
     <div class="hero-bar">
@@ -44,7 +44,7 @@ const featured = [
       </div>
 
       <div class="hero-art fade-up" style="transition-delay: 240ms;">
-        <div class="art-ph warm">{'◆ HERO\nARTWORK'}</div>
+        <img src="/art/paintings/painting-01.jpg" alt={t.home.featured.paintingAlt} loading="eager" />
       </div>
     </div>
 
@@ -74,13 +74,15 @@ const featured = [
     </div>
 
     <div class="gallery">
-      {featured.map((piece) => (
-        <a href="#" class={`art-card span-${piece.span}`} aria-label={piece.kind === 'sculpture' ? t.home.featured.sculpturePh : t.home.featured.paintingPh}>
-          <div class={`art-ph ${piece.tone}`}>
-            {piece.kind === 'sculpture' ? t.home.featured.sculpturePh : t.home.featured.paintingPh}
-          </div>
-        </a>
-      ))}
+      {featured.map((piece) => {
+        const alt = piece.kind === 'sculpture' ? t.home.featured.sculptureAlt : t.home.featured.paintingAlt;
+        const href = localePath(locale, piece.kind === 'sculpture' ? '/sculptures' : '/paintings');
+        return (
+          <a href={href} class={`art-card span-${piece.span}`} aria-label={alt}>
+            <img src={piece.src} alt={alt} loading="lazy" />
+          </a>
+        );
+      })}
     </div>
 
     <div class="section-action">
@@ -115,22 +117,6 @@ const featured = [
         </div>
       </div>
     </div>
-  </section>
-
-  {/* ── UPCOMING SHOW ── */}
-  <section class="section wrap">
-    <a href={localePath(locale, '/exhibitions')} class="show-card fade-up">
-      <div class="show-card-l">
-        <div class="mono-sm" style="color: var(--accent-1);">◐ {t.home.upcoming.label}</div>
-        <div class="show-card-yr">{t.home.upcoming.year}</div>
-        <div class="mono-sm">{t.home.upcoming.month}</div>
-      </div>
-      <div class="show-card-r">
-        <h3 class="show-card-title">{t.home.upcoming.title}</h3>
-        <div class="show-card-meta">{t.home.upcoming.venue}</div>
-        <div class="show-card-arrow">→</div>
-      </div>
-    </a>
   </section>
 
   {/* ── SHOP TEASER ── */}

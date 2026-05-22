@@ -1,15 +1,14 @@
 {
   "site": {
-    "title": "Bri Roshay",
+    "title": "Brigitte Roshay",
     "tagline": "Peintures et sculptures",
-    "description": "Peintures et sculptures originales de Bri Roshay."
+    "description": "Peintures et sculptures originales de Brigitte Roshay."
   },
   "nav": {
     "home": "Accueil",
     "paintings": "Peintures",
     "sculptures": "Sculptures",
     "about": "Atelier",
-    "exhibitions": "Expositions",
     "shop": "Boutique",
     "contact": "Contact",
     "openMenu": "Ouvrir le menu",
@@ -18,13 +17,13 @@
     "backToStudio": "Retour à l'atelier"
   },
   "home": {
-    "intro": "Peintures et sculptures originales depuis l'atelier de Bri Roshay.",
+    "intro": "Peintures et sculptures originales depuis l'atelier de Brigitte Roshay.",
     "viewPaintings": "Voir les peintures",
     "viewSculptures": "Voir les sculptures",
     "hero": {
       "studio": "Atelier · France",
       "available": "Disponible pour commande",
-      "line1": "BRI",
+      "line1": "BRIGITTE",
       "line2": "ROSHAY",
       "kicker": "Peintre et sculpteure travaillant depuis un atelier en France — paysages, intérieurs et figures discrètes, en huile, terre et bronze.",
       "metaYears": "ans de pratique",
@@ -40,8 +39,8 @@
       "title": "De l'",
       "titleAccent": "atelier",
       "blurb": "Une petite sélection de peintures et sculptures récentes. Découvrez la collection complète.",
-      "paintingPh": "◆ PEINTURE\nPHOTO",
-      "sculpturePh": "◆ SCULPTURE\nPHOTO",
+      "paintingAlt": "Peinture de Brigitte Roshay",
+      "sculptureAlt": "Sculpture de Brigitte Roshay",
       "allPaintings": "Toutes les peintures",
       "allSculptures": "Toutes les sculptures"
     },
@@ -53,13 +52,6 @@
       "blurb": "Brigitte peint et sculpte depuis plus de trente ans — des paysages de mémoire, des intérieurs depuis ses fenêtres, des figures nées de longues marches au bord du lac. Chaque pièce est terminée à la main dans son atelier en France.",
       "readMore": "Lire la suite",
       "portraitPh": "◆ PORTRAIT\nD'ARTISTE"
-    },
-    "upcoming": {
-      "label": "À venir",
-      "year": "2026",
-      "month": "À préciser",
-      "title": "Prochaine exposition — à annoncer",
-      "venue": "Atelier Roshay · France"
     }
   },
   "paintings": {
@@ -82,7 +74,8 @@
     "of": "sur ",
     "viewArchive": "Voir les archives",
     "backToPaintings": "Retour aux peintures",
-    "empty": "Aucune peinture pour le moment."
+    "empty": "Aucune peinture pour le moment.",
+    "sampleAlt": "Peinture de Brigitte Roshay"
   },
   "sculptures": {
     "title": "Sculptures",
@@ -94,7 +87,8 @@
     "allUnique": "Toutes uniques · signées à la main",
     "viewAll": "Voir toutes les sculptures",
     "backToSculptures": "Retour aux sculptures",
-    "empty": "Aucune sculpture pour le moment."
+    "empty": "Aucune sculpture pour le moment.",
+    "sampleAlt": "Sculpture de Brigitte Roshay"
   },
   "artwork": {
     "dimensions": "Dimensions",
@@ -165,16 +159,6 @@
       "studioVisitHref": "#"
     }
   },
-  "exhibitions": {
-    "title": "Expositions",
-    "label": "Expositions",
-    "titleA": "Où ses œuvres ",
-    "titleAccent": "ont été vues",
-    "titleB": "",
-    "blurb": "Une liste qui s'allonge — expositions, salons, journées portes ouvertes : ce qui a été, et ce qui vient.",
-    "upcoming": "À venir",
-    "past": "Passée"
-  },
   "shop": {
     "title": "Boutique",
     "label": "Boutique",
@@ -199,7 +183,7 @@
     }
   },
   "footer": {
-    "copyright": "© Bri Roshay",
+    "copyright": "© Brigitte Roshay",
     "copyrightSuffix": "Brigitte Roshay · Toutes œuvres protégées",
     "byline": "Site par la famille · fait avec soin"
   }

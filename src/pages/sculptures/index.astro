@@ -14,6 +14,13 @@ try {
   sculptures = [];
 }
 
+// Local template sculptures — shown when Sanity has no content yet.
+const sampleSculptures = [
+  { src: '/art/sculptures/sculpture-01.jpg' },
+  { src: '/art/sculptures/sculpture-02.jpg' },
+] as const;
+const usingSamples = sculptures.length === 0;
+
 const TONES = ['warm', 'cool', 'dark'] as const;
 ---
 <BaseLayout
@@ -28,7 +35,7 @@ const TONES = ['warm', 'cool', 'dark'] as const;
         <span aria-hidden="true">←</span>
         <span>{t.nav.backToStudio}</span>
       </a>
-      <div class="mono-sm">/02 — {t.sculptures.label}</div>
+      <div class="mono-sm">/03 — {t.sculptures.label}</div>
     </div>
     <h1 class="page-title fade-up">
       {t.sculptures.titleA}<span class="accent">{t.sculptures.titleAccent}</span>{t.sculptures.titleB}
@@ -38,10 +45,16 @@ const TONES = ['warm', 'cool', 'dark'] as const;
 
   <section class="section wrap" id="sculptures">
     <div class="gallery">
-      {sculptures.length === 0 ? (
-        <div class="filter-empty">
-          <div class="mono-sm">{t.sculptures.empty}</div>
-        </div>
+      {usingSamples ? (
+        sampleSculptures.map((piece) => (
+          <a
+            href="#"
+            class="art-card span-square"
+            aria-label={t.sculptures.sampleAlt}
+          >
+            <img src={piece.src} alt={t.sculptures.sampleAlt} loading="lazy" />
+          </a>
+        ))
       ) : (
         sculptures.map((artwork, i) => {
           const slug = pickLocale(artwork.slug, locale) ?? artwork.slug?.en;
@@ -55,7 +68,7 @@ const TONES = ['warm', 'cool', 'dark'] as const;
             <a
               href={href}
               class="art-card span-square"
-              aria-label={title}
+              aria-label={title || t.sculptures.label}
             >
               {primary ? (
                 <img

@@ -14,6 +14,14 @@ try {
   paintings = [];
 }
 
+// Local template paintings — shown when Sanity has no content yet.
+const samplePaintings = [
+  { src: '/art/paintings/painting-01.jpg', medium: 'oil' },
+  { src: '/art/paintings/painting-02.jpg', medium: 'oil' },
+  { src: '/art/paintings/painting-03.jpg', medium: 'oil' },
+] as const;
+const usingSamples = paintings.length === 0;
+
 const FILTERS = [
   { key: 'all',        label: t.paintings.filterAll },
   { key: 'oil',        label: t.paintings.filterOil },
@@ -21,14 +29,22 @@ const FILTERS = [
   { key: 'watercolour', label: t.paintings.filterWatercolour },
 ] as const;
 
-const counts: Record<string, number> = {
-  all: paintings.length,
-  oil: paintings.filter((p) => p.mediumCategory === 'oil').length,
-  acrylic: paintings.filter((p) => p.mediumCategory === 'acrylic').length,
-  watercolour: paintings.filter((p) => p.mediumCategory === 'watercolour').length,
-};
+const counts: Record<string, number> = usingSamples
+  ? {
+      all: samplePaintings.length,
+      oil: samplePaintings.filter((p) => p.medium === 'oil').length,
+      acrylic: samplePaintings.filter((p) => p.medium === 'acrylic').length,
+      watercolour: samplePaintings.filter((p) => p.medium === 'watercolour').length,
+    }
+  : {
+      all: paintings.length,
+      oil: paintings.filter((p) => p.mediumCategory === 'oil').length,
+      acrylic: paintings.filter((p) => p.mediumCategory === 'acrylic').length,
+      watercolour: paintings.filter((p) => p.mediumCategory === 'watercolour').length,
+    };
 
 const TONES = ['warm', 'cool', 'dark'] as const;
+const displayedCount = usingSamples ? samplePaintings.length : paintings.length;
 ---
 <BaseLayout
   title={t.paintings.title}
@@ -42,7 +58,7 @@ const TONES = ['warm', 'cool', 'dark'] as const;
         <span aria-hidden="true">←</span>
         <span>{t.nav.backToStudio}</span>
       </a>
-      <div class="mono-sm">/01 — {t.paintings.label}</div>
+      <div class="mono-sm">/02 — {t.paintings.label}</div>
     </div>
     <h1 class="page-title fade-up">
       {t.paintings.titleA}<span class="accent">{t.paintings.titleAccent}</span>{t.paintings.titleB}
@@ -70,10 +86,17 @@ const TONES = ['warm', 'cool', 'dark'] as const;
     </div>
 
     <div class="gallery" id="paintings-gallery">
-      {paintings.length === 0 ? (
-        <div class="filter-empty">
-          <div class="mono-sm">{t.paintings.empty}</div>
-        </div>
+      {usingSamples ? (
+        samplePaintings.map((piece) => (
+          <a
+            href="#"
+            class="art-card span-square"
+            data-medium={piece.medium}
+            aria-label={t.paintings.sampleAlt}
+          >
+            <img src={piece.src} alt={t.paintings.sampleAlt} loading="lazy" />
+          </a>
+        ))
       ) : (
         paintings.map((artwork, i) => {
           const slug = pickLocale(artwork.slug, locale) ?? artwork.slug?.en;
@@ -89,7 +112,7 @@ const TONES = ['warm', 'cool', 'dark'] as const;
               href={href}
               class="art-card span-square"
               data-medium={medium}
-              aria-label={title}
+              aria-label={title || t.paintings.label}
             >
               {primary ? (
                 <img
@@ -118,8 +141,8 @@ const TONES = ['warm', 'cool', 'dark'] as const;
     </div>
 
     <div class="section-action">
-      <span class="mono-sm" id="paintings-count" data-total={paintings.length}>
-        {paintings.length.toString().padStart(2, '0')} {t.paintings.worksShown}
+      <span class="mono-sm" id="paintings-count" data-total={displayedCount}>
+        {displayedCount.toString().padStart(2, '0')} {t.paintings.worksShown}
       </span>
       <a href="#" class="btn-line">{t.paintings.viewArchive} →</a>
     </div>
