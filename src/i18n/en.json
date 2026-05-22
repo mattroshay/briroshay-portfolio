@@ -1,15 +1,14 @@
 {
   "site": {
-    "title": "Bri Roshay",
+    "title": "Brigitte Roshay",
     "tagline": "Paintings and sculptures",
-    "description": "Original paintings and sculptures by Bri Roshay."
+    "description": "Original paintings and sculptures by Brigitte Roshay."
   },
   "nav": {
     "home": "Home",
     "paintings": "Paintings",
     "sculptures": "Sculptures",
     "about": "About",
-    "exhibitions": "Exhibitions",
     "shop": "Shop",
     "contact": "Contact",
     "openMenu": "Open menu",
@@ -18,13 +17,13 @@
     "backToStudio": "Back to studio"
   },
   "home": {
-    "intro": "Original paintings and sculptures from the studio of Bri Roshay.",
+    "intro": "Original paintings and sculptures from the studio of Brigitte Roshay.",
     "viewPaintings": "View paintings",
     "viewSculptures": "View sculptures",
     "hero": {
       "studio": "Studio · France",
       "available": "Available for commission",
-      "line1": "BRI",
+      "line1": "BRIGITTE",
       "line2": "ROSHAY",
       "kicker": "Painter and sculptor working from a studio in France — landscapes, interiors, and quiet figures, in oil, clay, and bronze.",
       "metaYears": "years practice",
@@ -40,8 +39,8 @@
       "title": "From the ",
       "titleAccent": "studio",
       "blurb": "A small selection of recent paintings and sculptures. Explore the full collection.",
-      "paintingPh": "◆ PAINTING\nPHOTO",
-      "sculpturePh": "◆ SCULPTURE\nPHOTO",
+      "paintingAlt": "Painting by Brigitte Roshay",
+      "sculptureAlt": "Sculpture by Brigitte Roshay",
       "allPaintings": "All paintings",
       "allSculptures": "All sculptures"
     },
@@ -53,13 +52,6 @@
       "blurb": "Brigitte has painted and sculpted for over thirty years — landscapes from memory, interiors from her windows, figures from the long walks along the lake. Each piece is hand-finished in her studio in France.",
       "readMore": "Read more",
       "portraitPh": "◆ ARTIST\nPORTRAIT"
-    },
-    "upcoming": {
-      "label": "Upcoming",
-      "year": "2026",
-      "month": "TBD",
-      "title": "Next exhibition — to be announced",
-      "venue": "Studio Roshay · France"
     }
   },
   "paintings": {
@@ -82,7 +74,8 @@
     "of": "of ",
     "viewArchive": "View archive",
     "backToPaintings": "Back to paintings",
-    "empty": "No paintings yet."
+    "empty": "No paintings yet.",
+    "sampleAlt": "Painting by Brigitte Roshay"
   },
   "sculptures": {
     "title": "Sculptures",
@@ -94,7 +87,8 @@
     "allUnique": "All pieces unique · signed by hand",
     "viewAll": "View all sculptures",
     "backToSculptures": "Back to sculptures",
-    "empty": "No sculptures yet."
+    "empty": "No sculptures yet.",
+    "sampleAlt": "Sculpture by Brigitte Roshay"
   },
   "artwork": {
     "dimensions": "Dimensions",
@@ -165,16 +159,6 @@
       "studioVisitHref": "#"
     }
   },
-  "exhibitions": {
-    "title": "Exhibitions",
-    "label": "Exhibitions",
-    "titleA": "Where her work ",
-    "titleAccent": "has shown",
-    "titleB": "",
-    "blurb": "A growing list of shows, fairs, and open-studio days — past appearances and what's coming next.",
-    "upcoming": "Upcoming",
-    "past": "Past"
-  },
   "shop": {
     "title": "Shop",
     "label": "Shop",
@@ -199,7 +183,7 @@
     }
   },
   "footer": {
-    "copyright": "© Bri Roshay",
+    "copyright": "© Brigitte Roshay",
     "copyrightSuffix": "Brigitte Roshay · All works protected",
     "byline": "Site by family · made with care"
   }

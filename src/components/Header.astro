@@ -3,7 +3,7 @@ import { getLocaleFromUrl, useTranslations, localePath } from '../i18n/utils';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 
 interface Props {
-  navKey?: 'paintings' | 'sculptures' | 'about' | 'exhibitions' | 'shop' | 'contact';
+  navKey?: 'home' | 'paintings' | 'sculptures' | 'about' | 'shop' | 'contact';
 }
 
 const { navKey } = Astro.props;
@@ -11,12 +11,12 @@ const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
 const links = [
-  { key: 'paintings',   path: '/paintings',   label: t.nav.paintings,   num: '01' },
-  { key: 'sculptures',  path: '/sculptures',  label: t.nav.sculptures,  num: '02' },
-  { key: 'about',       path: '/about',       label: t.nav.about,       num: '03' },
-  { key: 'exhibitions', path: '/exhibitions', label: t.nav.exhibitions, num: '04' },
-  { key: 'shop',        path: '/shop',        label: t.nav.shop,        num: '05' },
-  { key: 'contact',     path: '/contact',     label: t.nav.contact,     num: '06' },
+  { key: 'home',       path: '/',           label: t.nav.home,       num: '01' },
+  { key: 'paintings',  path: '/paintings',  label: t.nav.paintings,  num: '02' },
+  { key: 'sculptures', path: '/sculptures', label: t.nav.sculptures, num: '03' },
+  { key: 'about',      path: '/about',      label: t.nav.about,      num: '04' },
+  { key: 'shop',       path: '/shop',       label: t.nav.shop,       num: '05' },
+  { key: 'contact',    path: '/contact',    label: t.nav.contact,    num: '06' },
 ] as const;
 ---
 <nav class="nav">
