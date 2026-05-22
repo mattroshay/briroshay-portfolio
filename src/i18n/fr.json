@@ -8,8 +8,14 @@
     "home": "Accueil",
     "paintings": "Peintures",
     "sculptures": "Sculptures",
-    "about": "À propos",
-    "contact": "Contact"
+    "about": "Atelier",
+    "exhibitions": "Expositions",
+    "shop": "Boutique",
+    "contact": "Contact",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "openByAppointment": "Atelier · France · Sur rendez-vous",
+    "backToStudio": "Retour à l'atelier"
   },
   "home": {
     "intro": "Peintures et sculptures originales depuis l'atelier de Bri Roshay.",
@@ -42,12 +48,24 @@
     "enquire": "Se renseigner sur cette œuvre"
   },
   "about": {
-    "title": "À propos"
+    "title": "Atelier"
   },
   "contact": {
     "title": "Contact"
   },
+  "exhibitions": {
+    "title": "Expositions",
+    "upcoming": "À venir",
+    "past": "Passée"
+  },
+  "shop": {
+    "title": "Boutique",
+    "comingSoon": "Boutique complète · bientôt",
+    "inquireNow": "Faire une demande"
+  },
   "footer": {
-    "copyright": "© Bri Roshay"
+    "copyright": "© Bri Roshay",
+    "copyrightSuffix": "Brigitte Roshay · Toutes œuvres protégées",
+    "byline": "Site par la famille · fait avec soin"
   }
 }

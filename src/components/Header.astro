@@ -2,20 +2,87 @@
 import { getLocaleFromUrl, useTranslations, localePath } from '../i18n/utils';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 
+interface Props {
+  navKey?: 'paintings' | 'sculptures' | 'about' | 'exhibitions' | 'shop' | 'contact';
+}
+
+const { navKey } = Astro.props;
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
+
+const links = [
+  { key: 'paintings',   path: '/paintings',   label: t.nav.paintings,   num: '01' },
+  { key: 'sculptures',  path: '/sculptures',  label: t.nav.sculptures,  num: '02' },
+  { key: 'about',       path: '/about',       label: t.nav.about,       num: '03' },
+  { key: 'exhibitions', path: '/exhibitions', label: t.nav.exhibitions, num: '04' },
+  { key: 'shop',        path: '/shop',        label: t.nav.shop,        num: '05' },
+  { key: 'contact',     path: '/contact',     label: t.nav.contact,     num: '06' },
+] as const;
 ---
-<header class="border-b border-black/5">
-  <div class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between gap-6">
-    <a href={localePath(locale, '/')} class="text-xl tracking-tight font-medium">
-      {t.site.title}
-    </a>
-    <nav class="flex items-center gap-6 text-sm">
-      <a href={localePath(locale, '/paintings')}>{t.nav.paintings}</a>
-      <a href={localePath(locale, '/sculptures')}>{t.nav.sculptures}</a>
-      <a href={localePath(locale, '/about')}>{t.nav.about}</a>
-      <a href={localePath(locale, '/contact')}>{t.nav.contact}</a>
-      <LanguageSwitcher />
-    </nav>
+<nav class="nav">
+  <a href={localePath(locale, '/')} class="nav-mark">
+    ROSHAY<span class="star">✦</span>
+  </a>
+  <div class="nav-links">
+    {links.map((link) => (
+      <a
+        href={localePath(locale, link.path)}
+        class={navKey === link.key ? 'active' : ''}
+      >
+        {link.label}
+      </a>
+    ))}
   </div>
-</header>
+  <div class="nav-actions">
+    <LanguageSwitcher />
+    <button
+      type="button"
+      class="nav-burger"
+      aria-label={t.nav.openMenu}
+      aria-controls="nav-sheet"
+      data-nav-open
+    >
+      <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M2 5h12M2 11h12" />
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<div id="nav-sheet" class="nav-sheet" aria-hidden="true">
+  <div class="nav-sheet-hd">
+    <a href={localePath(locale, '/')} class="nav-mark">
+      ROSHAY<span class="star">✦</span>
+    </a>
+    <button type="button" class="nav-sheet-x" aria-label={t.nav.closeMenu} data-nav-close>×</button>
+  </div>
+  <div class="nav-sheet-links">
+    {links.map((link) => (
+      <a
+        href={localePath(locale, link.path)}
+        class={navKey === link.key ? 'active' : ''}
+      >
+        <span>{link.label}</span>
+        <span class="num">/{link.num}</span>
+      </a>
+    ))}
+  </div>
+  <div class="nav-sheet-foot">{t.nav.openByAppointment}</div>
+</div>
+
+<script>
+  const sheet = document.getElementById('nav-sheet');
+  const openBtn = document.querySelector('[data-nav-open]');
+  const closeBtn = document.querySelector('[data-nav-close]');
+  const setOpen = (open: boolean) => {
+    if (!sheet) return;
+    sheet.classList.toggle('open', open);
+    sheet.setAttribute('aria-hidden', open ? 'false' : 'true');
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+  };
+  openBtn?.addEventListener('click', () => setOpen(true));
+  closeBtn?.addEventListener('click', () => setOpen(false));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setOpen(false);
+  });
+</script>
