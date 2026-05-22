@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getLocaleFromUrl, useTranslations, localePath } from '../../i18n/utils';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+---
+<BaseLayout
+  title={t.shop.title}
+  description={t.shop.pageBlurb}
+  canonicalPath="/shop"
+  navKey="shop"
+>
+  <header class="page-head wrap">
+    <div class="page-head-bar">
+      <a href={localePath(locale, '/')} class="page-back">
+        <span aria-hidden="true">←</span>
+        <span>{t.nav.backToStudio}</span>
+      </a>
+      <div class="mono-sm">/05 — {t.shop.label}</div>
+    </div>
+    <h1 class="page-title fade-up">
+      {t.shop.pageTitleA}<span class="accent">{t.shop.pageTitleAccent}</span>{t.shop.pageTitleB}
+    </h1>
+    {t.shop.pageBlurb && (
+      <p class="page-blurb fade-up" style="transition-delay: 120ms;">{t.shop.pageBlurb}</p>
+    )}
+  </header>
+
+  <section class="section wrap" id="shop">
+    <div class="shop">
+      <div class="shop-grid">
+        <div>
+          <h3 class="fade-up">
+            {t.shop.headingA}<br /><span class="accent2">{t.shop.headingAccent}</span> ✦
+          </h3>
+          <p class="shop-blurb">{t.shop.blurb}</p>
+          <div class="shop-list">
+            <div class="row">
+              <span>{t.shop.rows.originalsLabel}</span>
+              <span class="px">{t.shop.rows.originalsPrice}</span>
+            </div>
+            <div class="row">
+              <span>{t.shop.rows.sculpturesLabel}</span>
+              <span class="px">{t.shop.rows.sculpturesPrice}</span>
+            </div>
+            <div class="row">
+              <span>{t.shop.rows.printsLabel}</span>
+              <span class="px">{t.shop.rows.printsPrice}</span>
+            </div>
+            <div class="row">
+              <span>{t.shop.rows.commissionsLabel}</span>
+              <span class="px">{t.shop.rows.commissionsPrice}</span>
+            </div>
+          </div>
+        </div>
+        <div class="shop-actions">
+          <a href={localePath(locale, '/contact')} class="btn-filled">
+            {t.shop.inquireNow} →
+          </a>
+          <span class="mono-sm" style="align-self: center;">{t.shop.comingSoon}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
