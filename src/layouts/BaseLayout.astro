@@ -7,13 +7,17 @@ import { getLocaleFromUrl, useTranslations, locales, localePath } from '../i18n/
 interface Props {
   title?: string;
   description?: string;
-  /** Canonical path WITHOUT locale prefix, e.g. "/paintings". Used to generate hreflang. */
+  /** Canonical path WITHOUT locale prefix, e.g. "/paintings". Used for hreflang. */
   canonicalPath?: string;
   /** Open Graph image URL (absolute). */
   ogImage?: string;
+  /** Active nav key for highlighting the current page. */
+  navKey?: 'paintings' | 'sculptures' | 'about' | 'exhibitions' | 'shop' | 'contact';
+  /** Suppress the site header/footer (used by self-contained pages like /palette). */
+  bare?: boolean;
 }
 
-const { title, description, canonicalPath = '/', ogImage } = Astro.props;
+const { title, description, canonicalPath = '/', ogImage, navKey, bare = false } = Astro.props;
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
@@ -26,7 +30,8 @@ const canonicalUrl = `${siteUrl}${localePath(locale, canonicalPath)}`;
 <html lang={locale}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
     <meta name="generator" content={Astro.generator} />
 
     <title>{pageTitle}</title>
@@ -52,12 +57,39 @@ const canonicalUrl = `${siteUrl}${localePath(locale, canonicalPath)}`;
     <meta property="og:url" content={canonicalUrl} />
     {ogImage && <meta property="og:image" content={ogImage} />}
     <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;700;800;900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;0,6..96,800;0,6..96,900;1,6..96,500&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+    />
   </head>
-  <body class="min-h-screen flex flex-col">
-    <Header />
-    <main class="flex-1">
+  <body>
+    <div class="tex-layer tex-paper" aria-hidden="true"></div>
+    {!bare && <Header navKey={navKey} />}
+    <main>
       <slot />
     </main>
-    <Footer />
+    {!bare && <Footer />}
+
+    <script>
+      // Reveal `.fade-up` elements when they enter the viewport.
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) =>
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('in');
+                io.unobserve(entry.target);
+              }
+            }),
+          { rootMargin: '0px 0px -8% 0px' }
+        );
+        document.querySelectorAll('.fade-up').forEach((el) => io.observe(el));
+      } else {
+        document.querySelectorAll('.fade-up').forEach((el) => el.classList.add('in'));
+      }
+    </script>
   </body>
 </html>

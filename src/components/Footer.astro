@@ -4,8 +4,16 @@ const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 const year = new Date().getFullYear();
 ---
-<footer class="border-t border-black/5 mt-24">
-  <div class="max-w-6xl mx-auto px-6 py-8 text-sm text-[color:var(--color-muted)]">
-    {t.footer.copyright} {year}
+<footer class="foot wrap">
+  <div class="foot-name">
+    <span>Bri</span>
+    <span class="echo">Bri</span>
+    <span class="ampr">&amp;</span>
+    <span>Roshay</span>
+  </div>
+  <div class="foot-meta">
+    <span>© {year} {t.footer.copyrightSuffix}</span>
+    <span>{t.footer.byline}</span>
+    <span>briroshay.com</span>
   </div>
 </footer>
