@@ -167,11 +167,21 @@
   },
   "exhibitions": {
     "title": "Expositions",
+    "label": "Expositions",
+    "titleA": "Où ses œuvres ",
+    "titleAccent": "ont été vues",
+    "titleB": "",
+    "blurb": "Une liste qui s'allonge — expositions, salons, journées portes ouvertes : ce qui a été, et ce qui vient.",
     "upcoming": "À venir",
     "past": "Passée"
   },
   "shop": {
     "title": "Boutique",
+    "label": "Boutique",
+    "pageTitleA": "Une œuvre ",
+    "pageTitleAccent": "chez vous",
+    "pageTitleB": "",
+    "pageBlurb": "Originaux, sculptures, tirages signés et commandes sur mesure — tout est disponible sur demande en attendant l'ouverture de la boutique complète.",
     "comingSoon": "Boutique complète · bientôt",
     "inquireNow": "Faire une demande",
     "headingA": "Une œuvre",

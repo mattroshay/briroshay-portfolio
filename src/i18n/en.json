@@ -167,11 +167,21 @@
   },
   "exhibitions": {
     "title": "Exhibitions",
+    "label": "Exhibitions",
+    "titleA": "Where her work ",
+    "titleAccent": "has shown",
+    "titleB": "",
+    "blurb": "A growing list of shows, fairs, and open-studio days — past appearances and what's coming next.",
     "upcoming": "Upcoming",
     "past": "Past"
   },
   "shop": {
     "title": "Shop",
+    "label": "Shop",
+    "pageTitleA": "Take a piece ",
+    "pageTitleAccent": "home",
+    "pageTitleB": "",
+    "pageBlurb": "Originals, sculptures, signed prints, and commissions — all available by inquiry until the full boutique opens.",
     "comingSoon": "Full shop · coming soon",
     "inquireNow": "Inquire now",
     "headingA": "Take a piece ",

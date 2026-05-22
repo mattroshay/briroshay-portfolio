@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getLocaleFromUrl, useTranslations, localePath } from '../i18n/utils';
+import { sortedExhibitions } from '../lib/exhibitions';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+// Upcoming pinned first, then past sorted by year desc — see lib/exhibitions.
+const rows = sortedExhibitions();
+---
+<BaseLayout
+  title={t.exhibitions.title}
+  description={t.exhibitions.blurb}
+  canonicalPath="/exhibitions"
+  navKey="exhibitions"
+>
+  <header class="page-head wrap">
+    <div class="page-head-bar">
+      <a href={localePath(locale, '/')} class="page-back">
+        <span aria-hidden="true">←</span>
+        <span>{t.nav.backToStudio}</span>
+      </a>
+      <div class="mono-sm">/04 — {t.exhibitions.label}</div>
+    </div>
+    <h1 class="page-title fade-up">
+      {t.exhibitions.titleA}<span class="accent">{t.exhibitions.titleAccent}</span>{t.exhibitions.titleB}
+    </h1>
+    {t.exhibitions.blurb && (
+      <p class="page-blurb fade-up" style="transition-delay: 120ms;">{t.exhibitions.blurb}</p>
+    )}
+  </header>
+
+  <section class="section wrap" id="exhibitions">
+    <div class="exhib-list">
+      {rows.map((e, i) => (
+        <div class="exhib-row fade-up" style={`transition-delay: ${i * 40}ms;`}>
+          <div class="yr">{e.year}</div>
+          <div class="mo">{locale === 'fr' ? e.monthFr : e.monthEn}</div>
+          <div class="ti">{locale === 'fr' ? e.titleFr : e.titleEn}</div>
+          <div class="ve">{(locale === 'fr' ? e.venueFr : e.venueEn)} · {e.city}</div>
+          <div class={`st ${e.status}`}>
+            {e.status === 'upcoming'
+              ? `◐ ${t.exhibitions.upcoming}`
+              : t.exhibitions.past}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
