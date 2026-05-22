@@ -20,7 +20,47 @@
   "home": {
     "intro": "Peintures et sculptures originales depuis l'atelier de Bri Roshay.",
     "viewPaintings": "Voir les peintures",
-    "viewSculptures": "Voir les sculptures"
+    "viewSculptures": "Voir les sculptures",
+    "hero": {
+      "studio": "Atelier · France",
+      "available": "Disponible pour commande",
+      "line1": "BRI",
+      "line2": "ROSHAY",
+      "kicker": "Peintre et sculpteure travaillant depuis un atelier en France — paysages, intérieurs et figures discrètes, en huile, terre et bronze.",
+      "metaYears": "ans de pratique",
+      "metaWorks": "œuvres",
+      "metaShows": "expositions",
+      "creditPainter": "Peintre",
+      "creditSculptor": "Sculpteure",
+      "creditCountry": "France",
+      "creditYear": "2026"
+    },
+    "featured": {
+      "label": "Sélection",
+      "title": "De l'",
+      "titleAccent": "atelier",
+      "blurb": "Une petite sélection de peintures et sculptures récentes. Découvrez la collection complète.",
+      "paintingPh": "◆ PEINTURE\nPHOTO",
+      "sculpturePh": "◆ SCULPTURE\nPHOTO",
+      "allPaintings": "Toutes les peintures",
+      "allSculptures": "Toutes les sculptures"
+    },
+    "about": {
+      "label": "À propos",
+      "titleA": "Trente ",
+      "titleAccent": "ans",
+      "titleB": "de peinture & d'argile",
+      "blurb": "Brigitte peint et sculpte depuis plus de trente ans — des paysages de mémoire, des intérieurs depuis ses fenêtres, des figures nées de longues marches au bord du lac. Chaque pièce est terminée à la main dans son atelier en France.",
+      "readMore": "Lire la suite",
+      "portraitPh": "◆ PORTRAIT\nD'ARTISTE"
+    },
+    "upcoming": {
+      "label": "À venir",
+      "year": "2026",
+      "month": "À préciser",
+      "title": "Prochaine exposition — à annoncer",
+      "venue": "Atelier Roshay · France"
+    }
   },
   "paintings": {
     "title": "Peintures",
@@ -48,10 +88,62 @@
     "enquire": "Se renseigner sur cette œuvre"
   },
   "about": {
-    "title": "Atelier"
+    "title": "Atelier",
+    "label": "À propos",
+    "titleA": "L'",
+    "titleAccent": "atelier",
+    "titleB": "",
+    "blurb": "Un court portrait de Brigitte — sa pratique, son atelier, et les signatures sous lesquelles elle a travaillé.",
+    "bio": "Brigitte Roshay peint et sculpte depuis plus de trente ans. Formée au dessin classique et autodidacte en terre, elle travaille depuis un petit atelier en France — entre de longues marches au bord du lac et des matins tranquilles à la fenêtre. Ses paysages et ses intérieurs sont peints de mémoire ; ses figures, en terre cuite et en bronze, naissent de la même attention patiente.",
+    "quote": "« L'art est perception — il naît là où l'imagination rencontre l'âme. »",
+    "signatures": {
+      "one": "Brigitte",
+      "two": "BriBri",
+      "three": "briroshay"
+    },
+    "stats": {
+      "yearsN": "30+",
+      "yearsL": "Années",
+      "originalsN": "120",
+      "originalsL": "Originaux",
+      "exhibitionsN": "14",
+      "exhibitionsL": "Expositions"
+    },
+    "portraitPh": "◆ PORTRAIT\nD'ARTISTE"
   },
   "contact": {
-    "title": "Contact"
+    "title": "Contact",
+    "label": "Contact",
+    "titleA": "Dites ",
+    "titleAccent": "bonjour",
+    "titleB": "",
+    "blurb": "Pour une visite, un achat, une commande, ou simplement partager une pensée — Brigitte lit chaque message.",
+    "form": {
+      "name": "Nom",
+      "namePlaceholder": "Votre nom",
+      "email": "Email",
+      "emailPlaceholder": "hello@example.com",
+      "subject": "Sujet",
+      "subjectPlaceholder": "Visite · Achat · Commande · …",
+      "message": "Message",
+      "messagePlaceholder": "Dites à Brigitte ce que vous avez en tête…",
+      "send": "Envoyer"
+    },
+    "side": {
+      "title": "Ou\ndirectement",
+      "email": "Email",
+      "emailValue": "hello@brigitteroshay.art",
+      "emailHref": "mailto:hello@brigitteroshay.art",
+      "facebook": "Facebook",
+      "facebookValue": "/briroshay",
+      "facebookHref": "https://www.facebook.com/briroshay",
+      "instagram": "Instagram",
+      "instagramValue": "@briroshay.art",
+      "instagramHref": "#",
+      "studioVisit": "Visite d'atelier",
+      "byAppointment": "sur rendez-vous",
+      "studioVisitHref": "#"
+    }
   },
   "exhibitions": {
     "title": "Expositions",
@@ -61,7 +153,20 @@
   "shop": {
     "title": "Boutique",
     "comingSoon": "Boutique complète · bientôt",
-    "inquireNow": "Faire une demande"
+    "inquireNow": "Faire une demande",
+    "headingA": "Une œuvre",
+    "headingAccent": "chez vous",
+    "blurb": "Une petite boutique ouvre bientôt. En attendant, originaux et tirages limités sont disponibles sur demande — Brigitte répond personnellement.",
+    "rows": {
+      "originalsLabel": "Peintures originales",
+      "originalsPrice": "sur demande",
+      "sculpturesLabel": "Sculptures, pièces uniques",
+      "sculpturesPrice": "sur demande",
+      "printsLabel": "Tirages giclée signés (éd. 25)",
+      "printsPrice": "€ 180 — 320",
+      "commissionsLabel": "Commandes sur mesure",
+      "commissionsPrice": "dès 600 €"
+    }
   },
   "footer": {
     "copyright": "© Bri Roshay",
